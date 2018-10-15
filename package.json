@@ -1,0 +1,98 @@
+{
+  "name": "vcs-oblique",
+  "version": "1.0.0",
+  "description": "oblique Library",
+  "main": "dist/vcs-oblique.min.js",
+  "scripts": {
+    "test": "mocha-webpack --recursive --require test/setup.js --webpack-config build/webpack.base.js --mode=development \"test/**/*.spec.js\"",
+    "lint": "eslint . --env node",
+    "build": "node build/build",
+    "watch": "node build/build --mode development --watch",
+    "coverage": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test",
+    "coverage:ci": "cross-env NODE_ENV=coverage nyc --reporter=text-summary npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/virtualcitySYSTEMS/vcs-oblique"
+  },
+  "author": "virtualcitySYSTEMS Gmbh",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-runtime": "^6.26.0",
+    "chai": "^4.1.2",
+    "commander": "^2.15.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-mocha": "^5.0.0",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "mocha": "^5.1.1",
+    "mocha-webpack": "2.0.0-beta.0",
+    "nyc": "^12.0.2",
+    "sinon": "^4.5.0",
+    "sinon-chai": "^3.0.0",
+    "webpack": "^4.8.3"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "rbush": "^2.0.2",
+    "rbush-knn": "^2.1.0",
+    "uuid": "^3.3.2"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "instrument": false,
+    "sourceMap": false
+  },
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "env": {
+      "browser": true
+    },
+    "rules": {
+      "linebreak-style": "off",
+      "no-bitwise": "off",
+      "no-console": "off",
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          "js": "never",
+          "vue": "never"
+        }
+      ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "optionalDependencies": [
+            "webpack"
+          ]
+        }
+      ],
+      "max-len": [
+        "error",
+        120,
+        2,
+        {
+          "ignoreUrls": true,
+          "ignoreComments": true,
+          "ignoreRegExpLiterals": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "dist"
+  ]
+}

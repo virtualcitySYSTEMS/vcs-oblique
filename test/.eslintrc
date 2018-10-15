@@ -1,0 +1,13 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "expect": true
+  },
+  "plugins": ["mocha"],
+  "rules": {
+    "no-underscore-dangle": "off",
+    "no-unused-expressions": "off"
+  }
+}

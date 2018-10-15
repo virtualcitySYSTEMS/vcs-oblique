@@ -4,7 +4,7 @@ import Direction from './vcs/oblique/direction';
 import Image from './vcs/oblique/image';
 import ImageMeta from './vcs/oblique/imageMeta';
 import olView from './vcs/oblique/oLView';
-import viewDirection from './vcs/oblique/viewDirection';
+import { ViewDirection, viewDirectionNames } from './vcs/oblique/viewDirection';
 
 
 if (!window.vcs) {
@@ -20,4 +20,5 @@ window.vcs.oblique.Direction = Direction;
 window.vcs.oblique.Image = Image;
 window.vcs.oblique.ImageMeta = ImageMeta;
 window.vcs.oblique.olView = olView;
-window.vcs.oblique.viewDirection = viewDirection;
+window.vcs.oblique.ViewDirection = ViewDirection;
+window.vcs.oblique.viewDirectionNames = viewDirectionNames;

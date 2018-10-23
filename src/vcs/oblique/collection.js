@@ -140,7 +140,7 @@ class Collection {
       });
     }
     let imageProjection = null;
-    if (json.generalImageInfo.crs) {
+    if (json.generalImageInfo.crs && global.proj4 && global.proj.defs) {
       const crsUuid = uuidv4();
       // @ts-ignore
       global.proj4.defs(crsUuid, json.generalImageInfo.crs);

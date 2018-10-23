@@ -12,6 +12,7 @@ config.mode = program.mode;
 if (program.mode === 'development') {
   config.devtool = 'cheap-source-map';
 }
+config.devtool = 'source-map';
 
 const compiler = webpack(config);
 

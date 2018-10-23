@@ -1,6 +1,6 @@
 {
   "name": "vcs-oblique",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "oblique Library",
   "main": "dist/vcs-oblique.min.js",
   "scripts": {

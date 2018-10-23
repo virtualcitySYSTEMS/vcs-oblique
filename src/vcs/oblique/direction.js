@@ -51,12 +51,6 @@ class Direction {
    * @param {vcs.oblique.Direction.Options} options
    */
   constructor(options) {
-    /** @type {?vcs.oblique.Image} */
-    this.currentImage = null;
-
-    /** @type {?vcs.oblique.OLView} */
-    this.currentView = null;
-
     const source = new ol.source.Vector({
       features: options.footPrintFeatures,
     });
@@ -93,14 +87,14 @@ class Direction {
   /**
    * @param {ol.Map} olMap
    * @param {ol.Coordinate=} coordinate
-   * @param {number=} zoom
+   * @param {number=} resolution
    * @return {Promise}
    */
-  activate(olMap, coordinate, zoom) {
+  activate(olMap, coordinate, resolution) {
     if (this.state === STATE.INACTIVE) {
       this.state = STATE.LOADING;
       this.olMap = olMap;
-      return this.setView(coordinate, zoom).then(() => {
+      return this.setView(coordinate, resolution).then(() => {
         this.state = STATE.ACTIVE;
       });
     }
@@ -118,15 +112,15 @@ class Direction {
 
   /**
    * @param {ol.Coordinate} coordinate
-   * @param {number} zoom
+   * @param {number} resolution
    * @return {Promise}
    */
-  setView(coordinate, zoom) {
+  setView(coordinate, resolution) {
     const imageName = this.getImageNameForCoordinates(coordinate);
     if (imageName !== null) {
-      return this.setImageOnMap(imageName).then(() => {
+      return this.setImageOnMap(imageName, coordinate).then(() => {
         const { view } = this.currentView;
-        view.setZoom(zoom);
+        view.setResolution(resolution);
       });
     }
     return Promise.reject(new Error('could not find an image in this direction'));

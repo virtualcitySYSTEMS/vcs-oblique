@@ -5,6 +5,7 @@ import Image from './vcs/oblique/image';
 import ImageMeta from './vcs/oblique/imageMeta';
 import olView from './vcs/oblique/oLView';
 import { ViewDirection, viewDirectionNames } from './vcs/oblique/viewDirection';
+import { transformFromImage, transformToImage } from './vcs/oblique/helpers';
 
 
 if (!window.vcs) {
@@ -22,3 +23,6 @@ window.vcs.oblique.ImageMeta = ImageMeta;
 window.vcs.oblique.olView = olView;
 window.vcs.oblique.ViewDirection = ViewDirection;
 window.vcs.oblique.viewDirectionNames = viewDirectionNames;
+window.vcs.oblique.transformFromImage = transformFromImage;
+window.vcs.oblique.transformToImage = transformToImage;
+

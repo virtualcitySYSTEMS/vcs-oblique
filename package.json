@@ -2,7 +2,7 @@
   "name": "vcs-oblique",
   "version": "1.0.5",
   "description": "oblique Library",
-  "main": "dist/vcs-oblique.min.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha-webpack --recursive --require test/setup.js --webpack-config build/webpack.base.js --mode=development \"test/**/*.spec.js\"",
     "lint": "eslint . --env node",
@@ -41,9 +41,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "rbush": "^2.0.2",
-    "rbush-knn": "^2.1.0",
     "uuid": "^3.3.2"
+  },
+  "peerDependencies": {
+    "ol": ">=5.2.0",
+    "rbush": ">=2.0.2",
+    "rbush-knn": ">=2.1.0"
   },
   "nyc": {
     "include": [

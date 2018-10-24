@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import rbush from 'rbush';
 import knn from 'rbush-knn';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import { transformFromImage } from './helpers';
+
 
 /**
  * @typedef {Object} vcs.oblique.Direction.Options
@@ -51,11 +54,11 @@ class Direction {
    * @param {vcs.oblique.Direction.Options} options
    */
   constructor(options) {
-    const source = new ol.source.Vector({
+    const source = new VectorSource({
       features: options.footPrintFeatures,
     });
     /** @type {?ol.layer.Vector} */
-    this.footPrintsLayer = new ol.layer.Vector({ source });
+    this.footPrintsLayer = new VectorLayer({ source });
 
     /** @type {rbush} */
     this.rTree = rbush();

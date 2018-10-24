@@ -8,6 +8,10 @@
 
 import uuidv4 from 'uuid/v4';
 import axios from 'axios/index';
+import { createEmpty, extend } from 'ol/extent';
+import { get as getProjection } from 'ol/proj';
+import Polygon from 'ol/geom/Polygon';
+import Feature from 'ol/Feature';
 import ImageMeta from './imageMeta';
 import Image from './image';
 import Camera from './camera';
@@ -51,7 +55,7 @@ class Collection {
     this.meta = [];
 
     /** @type {ol.Extent} */
-    this.extent = ol.extent.createEmpty();
+    this.extent = createEmpty();
   }
 
   /**
@@ -144,7 +148,7 @@ class Collection {
       const crsUuid = uuidv4();
       // @ts-ignore
       global.proj4.defs(crsUuid, json.generalImageInfo.crs);
-      imageProjection = ol.proj.get(crsUuid);
+      imageProjection = getProjection(crsUuid);
     }
 
     const imagesHeader = json.images.shift();
@@ -227,9 +231,9 @@ class Collection {
         maxY: image.centerPointOnGround[1],
         name: image.name,
       });
-      const geometry = new ol.geom.Polygon([image.groundCoordinates.concat([image.groundCoordinates[0]])]);
-      geometry.transform(this.projection || imageProjection, ol.proj.get('EPSG:3857'));
-      const feature = new ol.Feature({ geometry });
+      const geometry = new Polygon([image.groundCoordinates.concat([image.groundCoordinates[0]])]);
+      geometry.transform(this.projection || imageProjection, getProjection('EPSG:3857'));
+      const feature = new Feature({ geometry });
       feature.setId(image.name);
       directionOptions[image.viewDirection].footPrintFeatures.push(feature);
     });
@@ -239,7 +243,7 @@ class Collection {
       } else {
         this.directions[key].addOptions(directionOptions[key]);
       }
-      this.extent = ol.extent.extend(this.extent, this.directions[key].footPrintsLayer.getSource()
+      this.extent = extend(this.extent, this.directions[key].footPrintsLayer.getSource()
         .getExtent());
     });
   }

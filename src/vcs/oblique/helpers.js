@@ -1,4 +1,6 @@
 /* eslint-disable no-continue,no-console */
+import { get as getProjection, getTransform, transform } from 'ol/proj';
+import { boundingExtent, getBottomLeft, getBottomRight, getTopRight, getTopLeft } from 'ol/extent';
 import { ViewDirection } from './viewDirection';
 
 /**
@@ -24,12 +26,12 @@ export function cartesian2DDistance(point0, point1) {
  */
 export function sortRealWordEdgeCoordinates(inputCornerPoints, sortDirection = false) {
   const cornerPoints = inputCornerPoints.slice();
-  const extent = ol.extent.boundingExtent(cornerPoints);
+  const extent = boundingExtent(cornerPoints);
   const extentPoints = [
-    ol.extent.getBottomLeft(extent),
-    ol.extent.getBottomRight(extent),
-    ol.extent.getTopRight(extent),
-    ol.extent.getTopLeft(extent),
+    getBottomLeft(extent),
+    getBottomRight(extent),
+    getTopRight(extent),
+    getTopLeft(extent),
   ];
 
   let sorted = extentPoints.map((extentPoint) => {
@@ -39,6 +41,7 @@ export function sortRealWordEdgeCoordinates(inputCornerPoints, sortDirection = f
       const currentDistance = cartesian2DDistance(extentPoint, cornerPoint);
       if (currentDistance < distance) {
         distance = currentDistance;
+        closest = cornerIndex;
         closest = cornerIndex;
       }
     });
@@ -305,8 +308,8 @@ export function transformCWIFC(inputOrigin, inputTarget, originIsImage, coordina
  * @return {Promise<Array<ol.Coordinate>>}
  */
 export function getHeightFromTerrainProvider(terrainProvider, coordinates, optSourceProjection) {
-  const wgs84 = ol.proj.get('EPSG:4326');
-  const sourceTransformer = optSourceProjection ? ol.proj.getTransform(optSourceProjection, wgs84) : null;
+  const wgs84 = getProjection('EPSG:4326');
+  const sourceTransformer = optSourceProjection ? getTransform(optSourceProjection, wgs84) : null;
 
   const positions = coordinates.map((coord) => {
     const transformedCoordinates = sourceTransformer ? sourceTransformer(coord) : coord;
@@ -342,7 +345,7 @@ export function getHeightFromTerrainProvider(terrainProvider, coordinates, optSo
  */
 export function transformToImage(image, worldCoordinate, options = {}) {
   const gpInternalCoordinates = options.dataProjection ?
-    ol.proj.transform(worldCoordinate, options.dataProjection, image.projection) :
+    getTransform(worldCoordinate, options.dataProjection, image.projection) :
     worldCoordinate;
   function useAverageHeight() {
     const coords = image.transformRealWorld2Image(gpInternalCoordinates);
@@ -378,8 +381,8 @@ export function transformToImage(image, worldCoordinate, options = {}) {
  * @returns {Promise<{coords: ol.Coordinate, estimate: (boolean|undefined)}>} return coordinates are in WGS84 if not specified in options
  */
 export function transformFromImage(image, imageCoordinate, options = {}) {
-  const wgs84Projection = ol.proj.get('EPSG:4326');
-  const initialWorldCoords = ol.proj.transform(
+  const wgs84Projection = getProjection('EPSG:4326');
+  const initialWorldCoords = transform(
     image.transformImage2RealWorld(imageCoordinate, image.averageHeight),
     image.projection,
     wgs84Projection,
@@ -393,7 +396,7 @@ export function transformFromImage(image, imageCoordinate, options = {}) {
     return getHeightFromTerrainProvider(image.terrainProvider, [worldCoords])
       .then(() => {
         if (worldCoords[2] != null) {
-          const newWorldCoords = ol.proj.transform(
+          const newWorldCoords = transform(
             image.transformImage2RealWorld(imageCoordinate, worldCoords[2]),
             image.projection,
             wgs84Projection,
@@ -420,8 +423,8 @@ export function transformFromImage(image, imageCoordinate, options = {}) {
   return promise
     .then((coordsObj) => {
       coordsObj.coords = options.dataProjection ?
-        ol.proj.transform(coordsObj.coords, wgs84Projection, options.dataProjection) :
-        ol.proj.transform(coordsObj.coords, wgs84Projection, image.projection);
+        transform(coordsObj.coords, wgs84Projection, options.dataProjection) :
+        transform(coordsObj.coords, wgs84Projection, image.projection);
       return coordsObj;
     });
 }

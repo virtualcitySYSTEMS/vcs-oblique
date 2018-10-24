@@ -1,4 +1,10 @@
+import Projection from 'ol/proj/Projection';
+import View from 'ol/View';
+import TileGrid from 'ol/tilegrid/TileGrid';
+import TileImageSource from 'ol/source/TileImage';
+import TileLayer from 'ol/layer/Tile';
 import Url from '../url';
+
 /**
  * @typedef {Object} vcs.oblique.OLView.Options
  * @property {string} url
@@ -41,14 +47,14 @@ class OLView {
 
   _createViewAndLayer() {
     const extent = /** @type {ol.Extent} */ ([0, 0, ...this.size]);
-    const zoomifyProjection = new ol.proj.Projection({
+    const zoomifyProjection = new Projection({
       code: 'ZOOMIFY',
       units: 'pixels',
       extent,
     });
 
     /** @type {ol.View} */
-    this.view = new ol.View({
+    this.view = new View({
       projection: zoomifyProjection,
       center: [this.size[0] / 2, this.size[1] / 2],
       minZoom: this.minZoom,
@@ -64,7 +70,7 @@ class OLView {
 
     const tileImageOptions = {
       projection: zoomifyProjection,
-      tileGrid: new ol.tilegrid.TileGrid({
+      tileGrid: new TileGrid({
         origin: [0, 0],
         extent,
         resolutions: this.tileResolution,
@@ -75,10 +81,10 @@ class OLView {
       tileImageOptions.crossOrigin = 'anonymous';
     }
     /** @type {ol.source.TileImage} */
-    this.tileImageSource = new ol.source.TileImage(tileImageOptions);
+    this.tileImageSource = new TileImageSource(tileImageOptions);
 
     /** @type {ol.layer.Tile} */
-    this.layer = new ol.layer.Tile({
+    this.layer = new TileLayer({
       source: this.tileImageSource,
       extent,
     });

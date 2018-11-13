@@ -41,12 +41,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "rbush-knn": ">=2.1.0"
   },
   "peerDependencies": {
     "ol": ">=5.2.0",
-    "rbush": ">=2.0.2",
-    "rbush-knn": ">=2.1.0"
+    "rbush": ">=2.0.2"
   },
   "nyc": {
     "include": [

@@ -116,7 +116,9 @@ class OLView {
    */
   setImageName(name) {
     this.tileImageSource.setTileUrlFunction((coords) => {
-      const [z, x, y] = coords;
+      const [z, x, yInverted] = coords;
+      const y = -yInverted - 1;
+      //const [z, x, y] = coords;
       return `${this.url}/${name}/${z}/${x}/${y}.${this.format}`;
     });
     this.tileImageSource.refresh();

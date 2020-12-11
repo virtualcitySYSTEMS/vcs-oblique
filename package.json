@@ -45,7 +45,7 @@
     "rbush-knn": ">=2.1.0"
   },
   "peerDependencies": {
-    "ol": ">=5.2.0",
+    "ol": ">=6.0.0",
     "rbush": ">=2.0.2"
   },
   "nyc": {
